@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <QTextEdit>
 
 namespace Ui {
     class MainWindow;
@@ -23,6 +24,7 @@ public slots:
     void minimalToggled(bool toggled);
 private:
     void updateView();
+    QTextEdit::ExtraSelection createExtraSelection(int start, int length, QColor foreground, QColor background);
 
     Ui::MainWindow *ui;
     QPalette palette;

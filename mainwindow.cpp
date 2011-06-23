@@ -62,19 +62,18 @@ void MainWindow::inputChanged()
         QList<QTextEdit::ExtraSelection> matches;
 
         QColor backgroundColor = Qt::black;
-        QColor foregroundColor = Qt::green;
+        QColor foregroundColor = Qt::gray;
 
         int count = 0;
         int pos = 0;
         while ((pos = rx.indexIn(ui->textEdit->toPlainText(), pos)) != -1) {
-            QTextEdit::ExtraSelection highlight;
-            highlight.cursor = ui->textEdit->textCursor();
-            highlight.cursor.setPosition(pos);
-            highlight.cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, rx.matchedLength());
-            highlight.format.setBackground(backgroundColor);
-            highlight.format.setForeground(foregroundColor);
+            matches << createExtraSelection(pos, rx.matchedLength(), foregroundColor, backgroundColor);
 
-            matches << highlight;
+            QColor capForegroundColor = Qt::cyan;
+            for (int n = 1; n <= rx.captureCount(); n++) {
+                matches << createExtraSelection(rx.pos(n), rx.cap(n).size(), capForegroundColor, backgroundColor);
+                capForegroundColor = capForegroundColor == Qt::cyan ? Qt::magenta : Qt::cyan;
+            }
 
             pos += rx.matchedLength();
             //no deadlocks in case of matching empty string
@@ -82,12 +81,26 @@ void MainWindow::inputChanged()
                 pos++;
 
             count++;
-            backgroundColor = backgroundColor == Qt::green ? Qt::black : Qt::green;
-            foregroundColor = foregroundColor == Qt::green ? Qt::black : Qt::green;
+            backgroundColor = backgroundColor == Qt::gray ? Qt::black : Qt::gray;
+            foregroundColor = foregroundColor == Qt::gray ? Qt::black : Qt::gray;
         }
-        ui->statusBar->showMessage(QString::number(count) + " matches");
+
+        QString foundMuliple = count == 1 ? QString() : "es";
+        ui->statusBar->showMessage(QString::number(count) + " match" + foundMuliple);
         ui->textEdit->setExtraSelections(matches);
     }
+}
+
+QTextEdit::ExtraSelection MainWindow::createExtraSelection(int start, int length, QColor foreground, QColor background)
+{
+    QTextEdit::ExtraSelection highlight;
+    highlight.cursor = ui->textEdit->textCursor();
+    highlight.cursor.setPosition(start);
+    highlight.cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, length);
+    highlight.format.setBackground(background);
+    highlight.format.setForeground(foreground);
+
+    return highlight;
 }
 
 void MainWindow::patternSyntaxChanged(int index)
