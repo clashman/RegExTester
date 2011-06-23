@@ -1,8 +1,6 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 
-#include <QDebug>
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -46,27 +44,35 @@ void MainWindow::inputChanged()
         backgroundColor = Qt::red;
         QList<QTextEdit::ExtraSelection> empty;
         ui->textEdit->setExtraSelections(empty);
-
-        if (rx.pattern().isEmpty())
-            backgroundColor = Qt::white;
     }
+
+    if (rx.exactMatch(QString::null)) {
+        ui->statusBar->showMessage("pattern matches empty strings");
+        backgroundColor = Qt::yellow;
+    }
+
+    if (rx.pattern().isEmpty())
+        backgroundColor = Qt::white;
 
     palette.setColor(QPalette::Base, backgroundColor);
     ui->lineEdit->setPalette(palette);
 
-    if (rx.exactMatch(QString::null))
-        ui->statusBar->showMessage("pattern matches empty strings");
 
     if (rx.isValid() && !rx.pattern().isEmpty()) {
         QList<QTextEdit::ExtraSelection> matches;
 
+        QColor backgroundColor = Qt::black;
+        QColor foregroundColor = Qt::green;
+
+        int count = 0;
         int pos = 0;
         while ((pos = rx.indexIn(ui->textEdit->toPlainText(), pos)) != -1) {
             QTextEdit::ExtraSelection highlight;
             highlight.cursor = ui->textEdit->textCursor();
             highlight.cursor.setPosition(pos);
             highlight.cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, rx.matchedLength());
-            highlight.format.setBackground(Qt::green);
+            highlight.format.setBackground(backgroundColor);
+            highlight.format.setForeground(foregroundColor);
 
             matches << highlight;
 
@@ -74,7 +80,12 @@ void MainWindow::inputChanged()
             //no deadlocks in case of matching empty string
             if (!rx.matchedLength())
                 pos++;
+
+            count++;
+            backgroundColor = backgroundColor == Qt::green ? Qt::black : Qt::green;
+            foregroundColor = foregroundColor == Qt::green ? Qt::black : Qt::green;
         }
+        ui->statusBar->showMessage(QString::number(count) + " matches");
         ui->textEdit->setExtraSelections(matches);
     }
 }
