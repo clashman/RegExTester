@@ -23,6 +23,27 @@
      </widget>
     </item>
     <item>
+     <widget class="QComboBox" name="patternSyntax"/>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QCheckBox" name="caseSensitivity">
+        <property name="text">
+         <string>Case sensitivity</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="minimal">
+        <property name="text">
+         <string>Minimal</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <widget class="QTextEdit" name="textEdit">
       <property name="acceptRichText">
        <bool>true</bool>
@@ -31,6 +52,7 @@
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

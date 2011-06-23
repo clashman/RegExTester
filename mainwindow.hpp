@@ -16,10 +16,14 @@ public:
     ~MainWindow();
 
 public slots:
-    void inputChanged(QString text);
-    void textChanged();
+    void inputChanged();
 
+    void patternSyntaxChanged(int index);
+    void caseSensitivityToggled(bool toggled);
+    void minimalToggled(bool toggled);
 private:
+    void updateView();
+
     Ui::MainWindow *ui;
     QPalette palette;
     QRegExp rx;
