@@ -30,7 +30,7 @@
       <item>
        <widget class="QCheckBox" name="caseSensitivity">
         <property name="text">
-         <string>Case sensitivity</string>
+         <string>Case sensitive</string>
         </property>
        </widget>
       </item>
