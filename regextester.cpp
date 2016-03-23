@@ -18,12 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include "mainwindow.hpp"
-#include "ui_mainwindow.h"
+#include "regextester.hpp"
+#include "ui_regextester.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+RegExTester::RegExTester(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::RegExTester)
 {
     ui->setupUi(this);
     QStringList items;
@@ -39,12 +39,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->patternSyntax, SIGNAL(currentIndexChanged(int)), this, SLOT(patternSyntaxChanged(int)));
 }
 
-MainWindow::~MainWindow()
+RegExTester::~RegExTester()
 {
     delete ui;
 }
 
-void MainWindow::updateView()
+void RegExTester::updateView()
 {
     ui->caseSensitivity->setCheckState(rx.caseSensitivity() ? Qt::Checked : Qt::Unchecked);
     ui->minimal->setCheckState(rx.isMinimal() ? Qt::Checked : Qt::Unchecked);
@@ -53,7 +53,7 @@ void MainWindow::updateView()
     inputChanged();
 }
 
-void MainWindow::inputChanged()
+void RegExTester::inputChanged()
 {
     rx.setPattern(ui->lineEdit->text());
     ui->statusBar->showMessage(rx.errorString());
@@ -111,7 +111,7 @@ void MainWindow::inputChanged()
     }
 }
 
-QTextEdit::ExtraSelection MainWindow::createExtraSelection(int start, int length, QColor foreground, QColor background)
+QTextEdit::ExtraSelection RegExTester::createExtraSelection(int start, int length, QColor foreground, QColor background)
 {
     QTextEdit::ExtraSelection highlight;
     highlight.cursor = ui->textEdit->textCursor();
@@ -123,19 +123,19 @@ QTextEdit::ExtraSelection MainWindow::createExtraSelection(int start, int length
     return highlight;
 }
 
-void MainWindow::patternSyntaxChanged(int index)
+void RegExTester::patternSyntaxChanged(int index)
 {
     rx.setPatternSyntax((QRegExp::PatternSyntax)index);
     updateView();
 }
 
-void MainWindow::caseSensitivityToggled(bool toggled)
+void RegExTester::caseSensitivityToggled(bool toggled)
 {
     rx.setCaseSensitivity(toggled ? Qt::CaseSensitive : Qt::CaseInsensitive);
     updateView();
 }
 
-void MainWindow::minimalToggled(bool toggled)
+void RegExTester::minimalToggled(bool toggled)
 {
     rx.setMinimal(toggled);
     updateView();

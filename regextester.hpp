@@ -18,23 +18,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef MAINWINDOW_HPP
-#define MAINWINDOW_HPP
+#ifndef REGEXTESTER_HPP
+#define REGEXTESTER_HPP
 
 #include <QMainWindow>
 #include <QTextEdit>
 
 namespace Ui {
-    class MainWindow;
+    class RegExTester;
 }
 
-class MainWindow : public QMainWindow
+class RegExTester : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit RegExTester(QWidget *parent = 0);
+    ~RegExTester();
 
 public slots:
     void inputChanged();
@@ -46,9 +46,9 @@ private:
     void updateView();
     QTextEdit::ExtraSelection createExtraSelection(int start, int length, QColor foreground, QColor background);
 
-    Ui::MainWindow *ui;
+    Ui::RegExTester *ui;
     QPalette palette;
     QRegExp rx;
 };
 
-#endif // MAINWINDOW_HPP
+#endif // REGEXTESTER_HPP

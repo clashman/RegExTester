@@ -11,8 +11,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        regextester.cpp
 
-HEADERS  += mainwindow.hpp
+HEADERS  += regextester.hpp
 
-FORMS    += mainwindow.ui
+FORMS    += regextester.ui
